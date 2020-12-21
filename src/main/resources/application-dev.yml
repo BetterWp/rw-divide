@@ -1,0 +1,101 @@
+demo:
+  multi-ds:
+    route: round-robin
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://127.0.0.1:3315/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+    slave1:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://127.0.0.1:3316/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+    slave2:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://127.0.0.1:3317/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+
+# 读写分离 - 数据库框架版本 2.0 ShardingSphere-jdbc 5.0.0-alpha
+sharding:
+  jdbc:
+    datasource:
+      names: master,slave0,slave1
+      master:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3315/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+      slave0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3316/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+      slave1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3317/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+    config:
+      masterslave:
+        # 查询时的负载均衡算法，目前有2种算法，round_robin（轮询）和random（随机），
+        # 算法接口是io.shardingjdbc.core.api.algorithm.masterslave.MasterSlaveLoadBalanceAlgorithm。
+        # 实现类有RandomMasterSlaveLoadBalanceAlgorithm 和 RoundRobinMasterSlaveLoadBalanceAlgorithm。
+        load-balance-algorithm-type: round_robin
+        name: ms
+        # 主数据源名称
+        master-data-source-name: master
+        # 从数据源名称，多个用逗号隔开
+        slave-data-source-names: slave0,slave1
+        # *** 数据库分库分表配置 end
+      props:
+        sql:
+          show: true
+spring:
+  shardingsphere:
+    datasource:
+      common:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: root
+        password: 123456
+
+#读写分离 - 数据库框架版本 2.0 ShardingSphere-spring-boot-starter 5.0.0-alpha
+#spring:
+#  shardingsphere:
+#    datasource:
+#      names: master,slave0,slave1
+#      master:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driverClassName: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://127.0.0.1:3315/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+#        username: root
+#        password: 123456
+#      slave0:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driverClassName: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://127.0.0.1:3316/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+#        username: root
+#        password: 123456
+#      slave1:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        driverClassName: com.mysql.cj.jdbc.Driver
+#        jdbcUrl: jdbc:mysql://127.0.0.1:3317/db?characterEncoding=utf8&serverTimezone=GMT%2B8
+#        username: root
+#        password: 123456
+#    rules:
+#      replica-query:
+#        data-sources:
+#          rs1:
+#            primary-data-source-name: master
+#            replica-data-source-names: slave0,slave1
+#        load-balancers:
+#          type: random
+#          props: 0
+
+
+

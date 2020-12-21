@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.rwdivide.test.mapper.TOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.rwdivide.test.model.TOrder">
+        <id column="order_id" property="orderId" />
+        <result column="user_id" property="userId" />
+        <result column="order_name" property="orderName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        order_id, user_id, order_name
+    </sql>
+
+    <select id="getOrder" resultMap="BaseResultMap" resultType="com.demo.rwdivide.test.model.TOrder">
+        SELECT <include refid="Base_Column_List"></include> FROM t_order
+        <where>
+            <if test="user_id!=null">
+                user_id=#{user_id}
+            </if>
+            <if test="order_id!=null">
+                and order_id=#{order_id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

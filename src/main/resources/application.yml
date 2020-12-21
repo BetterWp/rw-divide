@@ -1,0 +1,31 @@
+server:
+  port: 9090
+
+spring:
+  profiles:
+    active: dev
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+  main:
+    allow-bean-definition-overriding: true
+
+mybatis-plus:
+  type-aliases-package: com.demo.rwdivide.base.model
+  mapper-locations:
+    - classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: null
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: true
+    cache-enabled: true
+    call-setters-on-nulls: true
+  global-config:
+    db-config:
+      id-type: auto
+
+

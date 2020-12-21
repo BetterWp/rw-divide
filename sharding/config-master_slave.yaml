@@ -1,0 +1,43 @@
+schemaName: rw_db #逻辑数据源名称
+
+dataSources:
+  master_ds: # 数据源配置，可配置多个 <data-source-name>
+    url: jdbc:mysql://127.0.0.1:3315/db?characterEncoding=utf8&serverTimezone=GMT%2B8 #数据库 URL 连接
+    username: root # 数据库用户名
+    password: 123456 # 数据库密码
+    connectionTimeoutMilliseconds: 30000 # 连接超时毫秒数
+    idleTimeoutMilliseconds: 60000 # 空闲连接回收超时毫秒数
+    maxLifetimeMilliseconds: 1800000 # 连接最大存活时间毫秒数
+    maxPoolSize: 50 # 最大连接数
+    minPoolSize: 1  # 最小连接数
+  slave_ds_0:
+    url: jdbc:mysql://127.0.0.1:3316/db?characterEncoding=utf8&serverTimezone=GMT%2B8 #数据库 URL 连接
+    username: root # 数据库用户名
+    password: 123456 # 数据库密码
+    connectionTimeoutMilliseconds: 30000 # 连接超时毫秒数
+    idleTimeoutMilliseconds: 60000 # 空闲连接回收超时毫秒数
+    maxLifetimeMilliseconds: 1800000 # 连接最大存活时间毫秒数
+    maxPoolSize: 50 # 最大连接数
+    minPoolSize: 1  # 最小连接数
+  slave_ds_1:
+    url: jdbc:mysql://127.0.0.1:3317/db?characterEncoding=utf8&serverTimezone=GMT%2B8 #数据库 URL 连接
+    username: root # 数据库用户名
+    password: 123456 # 数据库密码
+    connectionTimeoutMilliseconds: 30000 # 连接超时毫秒数
+    idleTimeoutMilliseconds: 60000 # 空闲连接回收超时毫秒数
+    maxLifetimeMilliseconds: 1800000 # 连接最大存活时间毫秒数
+    maxPoolSize: 50 # 最大连接数
+    minPoolSize: 1  # 最小连接数
+
+
+rules:
+- !REPLICA_QUERY
+  dataSources:
+    master_ds:
+      primaryDataSourceName: master_ds
+      replicaDataSourceNames:
+        - slave_ds_0
+        - slave_ds_1
+  # loadBalancers:   
+  #   type: RANDOM
+  #   props: 123  
